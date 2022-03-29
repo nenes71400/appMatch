@@ -1,0 +1,6 @@
+CREATE TABLE tournoi(
+  id INT NOT NULL AUTO_INCREMENT,
+  nom VARCHAR (255) NOT NULL,
+  date DATE,
+  PRIMARY KEY(id)
+);
