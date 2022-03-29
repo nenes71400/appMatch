@@ -2,9 +2,10 @@ const express = require('express');
 const connection = require('../connection');
 const router = express.Router();
 
-router.get('/read', (req, res, next) => {
-  var query = "select * from tournoi";
-  connection.query(query, (err, results) => {
+router.get('/read/:tournoi_id', (req, res, next) => {
+  const tournoi_id = req.params.tournoi_id;
+  var query = "select * from club_tournoi where tournoi_id=?";
+  connection.query(query, [tournoi_id], (err, results) => {
     if(!err){
       return res.status(200).json(results);
     }
@@ -13,19 +14,6 @@ router.get('/read', (req, res, next) => {
     }
   })
 });
-
-router.post('/create', (req, res, next) => {
-  let tournoi = req.body;
-  var query = "insert into tournoi (nom,date) values(?,?)";
-  connection.query(query, [tournoi.nom, tournoi.date], (err, results) => {
-    if (!err){
-      return res.status(200).json({message: "Tournoi ajouté avec succes"});
-    }
-    else
-      return res.status(500).json(err);
-  });
-});
-
 
 //router.patch('/update/:id', (req, res, next) => {
 //  const id = req.params.id;
@@ -40,6 +28,18 @@ router.post('/create', (req, res, next) => {
 //    } else{
 //      return res.status(500).json(err);
 //    }
+//  });
+//});
+
+//router.post('/create', (req, res, next) => {
+//  let club = req.body;
+//  var query = "insert into tournoi (nom,date) values(?,?)";
+//  connection.query(query, [tournoi.nom, tournoi.date], (err, results) => {
+//    if (!err){
+//      return res.status(200).json({message: "Tournoi ajouté avec succes"});
+//    }
+//    else
+//      return res.status(500).json(err);
 //  });
 //});
 
