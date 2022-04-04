@@ -27,6 +27,9 @@ CREATE TABLE tournoi(
 );
 -- Données
 INSERT INTO tournoi (nom, date, ville) VALUES ('FFR', '2021-01-01', 'Autun');
+SELECT LAST_INSERT_ID();
+INSERT INTO tournoi (nom, date, ville) VALUES ('TEST', '2022-05-04', 'Paris');
+SELECT LAST_INSERT_ID();
 
 ---------------------------------
 -- CLUB
@@ -36,11 +39,13 @@ CREATE TABLE club(
   id INT NOT NULL AUTO_INCREMENT,
   nom VARCHAR (255) NOT NULL,
   ville VARCHAR (255) NOT NULL,
+  logo BLOB,
   PRIMARY KEY(id)
 );
 -- Données
-INSERT INTO club (nom, ville) VALUES ('ASA', 'Autun');
-INSERT INTO club (nom, ville) VALUES ('SCC', 'Couches');
+--INSERT INTO club (nom, ville, logo) VALUES ('ASA', 'Autun',  LOAD_FILE('/home/alexis/Images/asa.jpg'));
+INSERT INTO club (nom, ville, logo) VALUES ('ASA', 'Autun',  LOAD_FILE('/tmp/asa.jpg'));
+INSERT INTO club (nom, ville, logo) VALUES ('SCC', 'Couches', null);
 
 ---------------------------------
 -- CATEGORIE

@@ -3,7 +3,8 @@ const connection = require('../connection');
 const router = express.Router();
 
 router.get('/read', (req, res, next) => {
-  var query = "select * from club";
+  var query = "select id, nom, ville from club";
+  console.log(query);
   connection.query(query, (err, results) => {
     if(!err){
       return res.status(200).json(results);
@@ -15,16 +16,35 @@ router.get('/read', (req, res, next) => {
 });
 
 router.get('/read/:id', (req, res, next) => {
-  var query = "select * from club where club.id=?";
+  //var query = `select * from club where club.id=? into outfile /images/clubs/logo_id${req.params.id}.jpg`;
+  var query = "select id, nom, ville from club where club.id=?";
+  console.log(query + " " + req.params.id);
   connection.query(query, [req.params.id], (err, results) => {
     if(!err){
-      return res.status(200).json(results);
+      return res.status(200).json(results.pop());
     }
     else{
       return res.status(500).json(err);
     }
   })
 });
+
+router.post('/create', (req, res, next) => {
+  //console.log("CREATE");
+  //console.log(req.body);
+  let club = req.body;
+  var query = "insert into club (nom, ville, logo) values(?,?,?)";
+  connection.query(query, [club.nom, club.ville, null], (err, results) => {
+    if (!err){
+      //console.log("AJOUT OK")
+      return res.status(200).json({message: "Club ajouté avec succes"});
+    }
+    else
+      //console.log("AJOUT NOK")
+      return res.status(500).json(err);
+  });
+});
+
 //router.patch('/update/:id', (req, res, next) => {
 //  const id = req.params.id;
 //  let tournoi = req.body;
@@ -89,15 +109,4 @@ module.exports = router;
 //
 //export default router;
 //
-//router.post('/create', (req, res, next) => {
-//  let club = req.body;
-//  var query = "insert into tournoi (nom,date) values(?,?)";
-//  connection.query(query, [tournoi.nom, tournoi.date], (err, results) => {
-//    if (!err){
-//      return res.status(200).json({message: "Tournoi ajouté avec succes"});
-//    }
-//    else
-//      return res.status(500).json(err);
-//  });
-//});
 
